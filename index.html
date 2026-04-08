@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>重要人生时间窗口</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Noto Sans SC', sans-serif; background: #f8fafc; color: #1e293b; min-height: 100vh; }
+
+    .header { padding: 24px 40px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .header h1 { font-size: 28px; font-weight: 700; color: #0f172a; }
+    .header .subtitle { font-size: 14px; color: #64748b; margin-top: 4px; }
+
+    .slider-container { display: flex; align-items: center; gap: 12px; }
+    .slider-container label { font-size: 14px; color: #475569; white-space: nowrap; }
+    .slider-container input[type="range"] { width: 200px; height: 6px; -webkit-appearance: none; background: #e2e8f0; border-radius: 3px; outline: none; }
+    .slider-container input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; background: #10b981; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 6px rgba(16,185,129,0.4); }
+    .age-display { font-size: 24px; font-weight: 700; color: #10b981; min-width: 60px; }
+
+    .main { padding: 32px 40px; max-width: 1400px; margin: 0 auto; }
+
+    .cards-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+
+    /* 三种状态 */
+    .card { background: white; border-radius: 12px; padding: 20px; border: 2px solid #e2e8f0; cursor: pointer; transition: all 0.3s; position: relative; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+    .card.open  { border-color: #10b981; }
+    .card.future { border-color: #3b82f6; }
+    .card.closed { border-color: #e2e8f0; background: #f8fafc; opacity: 0.55; filter: grayscale(60%); }
+    .card.closed:hover { transform: none; box-shadow: none; }
+
+    .card-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-bottom: 12px; }
+    .card-status.open   { background: #d1fae5; color: #059669; }
+    .card-status.future { background: #dbeafe; color: #2563eb; }
+    .card-status.closed { background: #f1f5f9; color: #94a3b8; }
+    .card-status::before { content: ''; width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .card-status.open::before   { background: #10b981; }
+    .card-status.future::before { background: #3b82f6; }
+    .card-status.closed::before { background: #cbd5e1; }
+
+    .card-title  { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+    .card-period { font-size: 13px; color: #64748b; margin-bottom: 10px; }
+    .card-desc   { font-size: 12px; color: #94a3b8; line-height: 1.65; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-tags   { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #f1f5f9; color: #64748b; }
+
+    /* 进度条 */
+    .card-progress { margin-bottom: 12px; }
+    .progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 3px; transition: width .4s ease; }
+    .progress-fill.open   { background: linear-gradient(90deg, #10b981, #34d399); }
+    .progress-fill.future { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+    .progress-fill.closed  { background: #e2e8f0; }
+    .progress-label { font-size: 11px; color: #94a3b8; margin-top: 4px; display: flex; justify-content: space-between; }
+
+    .card-metrics { display: flex; gap: 10px; margin-top: 10px; }
+    .metric { flex: 1; text-align: center; padding: 8px 4px; background: #f8fafc; border-radius: 8px; }
+    .metric-value { font-size: 17px; font-weight: 700; color: #0f172a; }
+    .metric-label { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: white; border-radius: 16px; padding: 36px; max-width: 520px; width: 100%; max-height: 85vh; overflow-y: auto; position: relative; animation: fadeIn .2s ease; }
+    @keyframes fadeIn { from { opacity:0; transform: scale(.95); } to { opacity:1; transform: scale(1); } }
+    .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border: none; background: #f1f5f9; border-radius: 50%; cursor: pointer; font-size: 18px; color: #64748b; display: flex; align-items: center; justify-content: center; }
+    .modal-close:hover { background: #e2e8f0; }
+    .modal-section { margin-bottom: 20px; }
+    .modal-section h4 { font-size: 13px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+    .modal-section p { font-size: 14px; color: #475569; line-height: 1.8; }
+    .modal-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+    .modal-metric { text-align: center; padding: 16px 8px; background: #f8fafc; border-radius: 12px; }
+    .modal-metric .val { font-size: 26px; font-weight: 700; color: #0f172a; }
+    .modal-metric .lbl { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+    .cost-extreme { color: #ef4444 !important; }
+    .cost-high    { color: #f59e0b !important; }
+    .cost-medium  { color: #3b82f6 !important; }
+    .cost-low     { color: #10b981 !important; }
+
+    @media (max-width: 1200px) { .cards-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 900px)  { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px)  { .cards-grid { grid-template-columns: repeat(2, 1fr); } .header { padding: 16px 20px; } .main { padding: 20px; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div>
+      <h1>重要人生时间窗口</h1>
+      <p class="subtitle">机会窗口随年龄并非线性变小，而可能断崖式坍塌</p>
+    </div>
+    <div class="slider-container">
+      <label>调节观测年龄锚点</label>
+      <input type="range" id="ageSlider" min="1" max="60" value="20">
+      <span class="age-display" id="ageDisplay">20岁</span>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="cards-grid" id="cardsGrid"></div>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal"></div>
+  </div>
+
+  <script>
+    const windows = [
+      {
+        id: 1, title: '语言学习黄金期', period: [3, 15],
+        rate: 20, cost: 'Extreme',
+        tags: ['神经可塑性', '母语级流利', '发音'],
+        desc: '儿童期大脑神经可塑性最强，语音辨别和语法内化几乎是无意识完成的。错过后成人学习者需要付出数倍努力，且极难达到母语级发音和直觉语感。',
+        detail: '研究表明，7岁前开始学习第二语言的人，成年后大脑处理该语言的区域与母语相同；而成年后学习者则使用不同脑区，效率和上限均大幅下降。每推迟一年，达到母语级流利的概率下降约5%。',
+        actions: ['0-6岁：沉浸式双语环境', '6-12岁：系统语法+大量输入', '12-15岁：强化口语和写作']
+      },
+      {
+        id: 2, title: '第一学历跃迁', period: [15, 22],
+        rate: 30, cost: 'High',
+        tags: ['高考', '阶层跃迁', '社会认可'],
+        desc: '高考是中国最公平的社会阶层跃迁通道，一次考试可以改变家族命运。复读、成人高考、专升本的社会认可度远低于应届全日制学历。',
+        detail: '第一学历在中国职场具有极强的筛选效应。顶尖企业和机关单位的简历筛选中，第一学历往往是硬门槛。成人学历虽然法律效力相同，但实际求职中的认可度差距巨大，且随年龄增长差距不会缩小。',
+        actions: ['初中：打好数理基础', '高中：全力备考，不留遗憾', '大学：选好专业方向，积累实习']
+      },
+      {
+        id: 3, title: '高强度专业训练窗口', period: [6, 18],
+        rate: 35, cost: 'High',
+        tags: ['万小时定律', '运动员', '音乐家'],
+        desc: '顶级运动员、音乐家、舞蹈家的黄金训练期在18岁前。身体协调性、肌肉记忆、神经反射速度在青少年期达到峰值，错过后即使投入同等时间也无法达到同等水平。',
+        detail: '奥运冠军平均开始专项训练的年龄为6-8岁，职业钢琴家平均开始系统训练的年龄为5岁。成年后开始的专业训练者，在竞技层面几乎无法与从小训练者竞争。这个窗口一旦关闭，通往顶尖的路就永久关闭了。',
+        actions: ['6-10岁：广泛尝试，发现天赋', '10-14岁：专项深化训练', '14-18岁：冲击专业级水平']
+      },
+      {
+        id: 4, title: '应届生校招窗口', period: [21, 27],
+        rate: 50, cost: 'Medium',
+        tags: ['大厂', '体制内', '应届身份'],
+        desc: '大多数顶尖企业、国央企、公务员岗位只面向应届生开放，或给予应届生显著优势。这个身份只有一次，用完即失效。',
+        detail: '应届生可以参加校园招聘，起薪往往高于同等社招岗位，且可以进入通常对社招关闭的管培生项目。国内大厂的应届生名额占总招聘的60-80%。一旦错过，同等岗位的社招竞争激烈程度是校招的3-5倍，且薪资谈判空间更小。',
+        actions: ['大二：开始实习积累', '大三：锁定目标行业和公司', '大四上：全力投递，不拖延']
+      },
+      {
+        id: 5, title: '婚恋高匹配窗口', period: [22, 32],
+        rate: 55, cost: 'Medium',
+        tags: ['社交圈', '匹配质量', '生育'],
+        desc: '这是社交圈最广、可选对象最多、双方条件最接近的时期。随着年龄增长，优质单身人群快速减少，双方的历史包袱和条件差距逐渐增大。',
+        detail: '25-30岁是婚恋市场供需最平衡的时期。30岁后，优质异性的已婚比例快速上升，剩余单身人群中条件参差不齐的比例增加。同时，个人的生活习惯和性格已经固化，适应新伴侣的难度增加。女性还面临生育能力随年龄下降的生理约束。',
+        actions: ['22-26岁：主动扩展社交圈', '26-30岁：认真筛选，不将就', '30岁前：做好是否生育的决策']
+      },
+      {
+        id: 6, title: '高强度试错创业窗口', period: [22, 35],
+        rate: 40, cost: 'Medium',
+        tags: ['试错成本', '精力', '风险承受'],
+        desc: '年轻时没有房贷、没有孩子、身体好、恢复快，失败了可以重来。35岁后创业的机会成本和心理压力都会大幅上升。',
+        detail: '创业成功率本就极低，但年轻创业者的优势在于：失败成本低（无家庭负担）、精力充沛（可以996甚至007）、思维灵活（路径依赖少）、社会容错率高（年轻失败不被歧视）。35岁后，这四个优势都会显著减弱，而创业的机会成本（放弃的稳定收入）却大幅上升。',
+        actions: ['22-25岁：在大公司学习行业', '25-30岁：找到切入点，小步快跑', '30-35岁：all-in或放弃，不要拖']
+      },
+      {
+        id: 7, title: '身体透支可逆窗口', period: [18, 30],
+        rate: 60, cost: 'Medium',
+        tags: ['恢复力', '健康储蓄', '代谢'],
+        desc: '年轻的身体有强大的自我修复能力，熬夜、高强度工作的后果是暂时的。30岁后，同样的透支会留下更持久的损伤。',
+        detail: '人体的细胞修复能力、免疫系统效率、代谢速率都在25岁左右达到峰值，之后逐年下降。20多岁熬夜后睡一觉就恢复，30多岁可能需要一周。这个窗口的意义不是鼓励透支，而是提醒：如果有必须高强度投入的事，年轻时做的代价最小。',
+        actions: ['18-25岁：可以冲刺，但要有目标', '25-30岁：开始建立健康习惯', '30岁后：把健康当作最重要的资产']
+      },
+      {
+        id: 8, title: '跨域迁移窗口', period: [22, 35],
+        rate: 45, cost: 'Medium',
+        tags: ['移民', '转行', '城市迁移'],
+        desc: '无论是移民海外、跨城市发展还是彻底转行，年轻时的适应成本最低。语言学习、文化融入、职业重建的能力都随年龄递减。',
+        detail: '移民研究显示，25岁前移民的第二代融入程度远高于35岁后移民者。转行数据同样如此：30岁前转行的成功率约为65%，35岁后降至40%，40岁后降至25%。这不仅是能力问题，更是社会对"跨界者"的容忍度随年龄下降的问题。',
+        actions: ['22-28岁：大胆尝试不同城市和行业', '28-32岁：做出方向性选择', '32-35岁：深耕选定的方向']
+      },
+      {
+        id: 9, title: '生育窗口', period: [24, 35],
+        rate: 70, cost: 'Low',
+        tags: ['生育力', '优生优育', '精力'],
+        desc: '女性生育能力在25-30岁达到峰值，35岁后显著下降，高龄产妇风险大幅上升。男性精子质量也在35岁后开始下降。',
+        detail: '医学数据显示，35岁以上女性的自然受孕率比25岁下降约50%，流产率上升3倍，染色体异常风险上升5倍。同时，年轻父母有更充沛的精力陪伴孩子成长，且孩子成年时父母仍处于壮年，可以给予更多支持。',
+        actions: ['24-30岁：最佳生育时间窗口', '30-35岁：如果想要孩子，不要再等', '35岁后：需要更多医学介入和监测']
+      },
+      {
+        id: 10, title: '财富复利窗口', period: [22, 40],
+        rate: 65, cost: 'Low',
+        tags: ['复利', '时间价值', '资产配置'],
+        desc: '复利的威力来自时间。22岁开始投资和32岁开始投资，到60岁时的差距可能超过10倍。这10年的差距永远无法弥补。',
+        detail: '假设年化收益8%：22岁开始每月投入2000元，60岁时约有700万；32岁开始同样投入，60岁时约有300万。差距400万，且随着起始年龄推迟差距指数级扩大。更重要的是，年轻时建立的投资习惯和财务认知，是一生财富积累的基础。',
+        actions: ['22-25岁：建立紧急备用金，开始定投', '25-30岁：学习资产配置，增加投资比例', '30-40岁：优化组合，考虑房产和股权']
+      },
+      {
+        id: 11, title: '人脉积累黄金期', period: [22, 35],
+        rate: 55, cost: 'Medium',
+        tags: ['社交网络', '人脉质量', '资源积累'],
+        desc: '职场初期建立的同事关系、行业人脉，会伴随整个职业生涯。35岁后，同龄人已占据中高层位置，再想建立对等关系网络难度大增。',
+        detail: '25-35岁是职业社交的黄金期：同龄人都在上升期，未来可能成为各领域关键人物。同时，这个阶段社交成本低、精力充沛，容易建立深厚友谊。35岁后，同龄人位置固化，新建立的往往是"向下社交"或"利益交换"，质量难以与年轻时的情谊相比。',
+        actions: ['22-26岁：多参加行业活动，不计成本', '26-30岁：深耕核心人脉圈', '30-35岁：维护关键关系，减少无效社交']
+      },
+      {
+        id: 12, title: '职业定型窗口', period: [25, 35],
+        rate: 50, cost: 'High',
+        tags: ['职业赛道', '专业壁垒', 'T型人才'],
+        desc: '25-35岁是确定职业方向、建立专业壁垒的关键十年。35岁后转行或跨界的成本和难度都会大幅上升。',
+        detail: '前几年的尝试期结束后，28岁左右应该确定主攻方向，用5-7年时间建立不可替代的专业能力。35岁后，如果还没有清晰的专业标签，职场竞争力会断崖式下降——同龄人已经是专家或管理者，而你还在和25岁的人竞争入门岗位。',
+        actions: ['25-28岁：确定主攻方向，开始深耕', '28-32岁：建立专业壁垒，成为领域专家', '32-35岁：拓展边界，向管理或更高层级发展']
+      },
+      {
+        id: 13, title: '父母陪伴窗口', period: [25, 45],
+        rate: 60, cost: 'Medium',
+        tags: ['亲子关系', '时间不可逆', '陪伴成本'],
+        desc: '父母在60岁前身体相对健康，是建立深度亲子关系、弥补情感缺憾的最佳时期。60岁后健康问题频发，陪伴质量会大打折扣。',
+        detail: '25-45岁是"上有老下有小"的阶段，也是与父母建立成年人友谊的最佳时期。父母60岁后，慢性病、行动不便等问题会逐渐出现，那时陪伴更多是照顾而非交流。趁父母还健康，多带他们旅行、多深入聊天，这些时光无法重来。',
+        actions: ['25-35岁：建立独立后的新亲子关系', '35-40岁：带父母旅行，创造共同回忆', '40-45岁：关注父母健康，及时干预']
+      },
+      {
+        id: 14, title: '子女陪伴黄金期', period: [25, 45],
+        rate: 75, cost: 'Low',
+        tags: ['亲子关系', '成长见证', '教育投入'],
+        desc: '孩子0-18岁的成长期只有一次。错过了某个阶段，亲子关系就会永远缺失那部分。高质量陪伴需要时间和精力，而这两者在35岁后都会下降。',
+        detail: '孩子每个年龄段都有独特的心理需求：0-3岁需要安全感建立，3-6岁需要性格塑造，6-12岁需要习惯培养，12-18岁需要价值观引导。每个阶段都是不可逆的。同时，父母的精力在35岁后开始下降，等到事业有成想陪伴时，孩子可能已经不需要了。',
+        actions: ['0-6岁：全身心陪伴，建立亲密关系', '6-12岁：培养习惯，塑造性格', '12-18岁：引导价值观，做孩子朋友']
+      },
+      {
+        id: 15, title: '认知升级窗口', period: [20, 35],
+        rate: 45, cost: 'High',
+        tags: ['思维模式', '世界观', '认知突破'],
+        desc: '20-35岁是认知系统快速迭代的时期。大脑的神经连接还在塑造，接触新思想、建立新思维模式的能力最强。35岁后，思维模式趋于固化，改变成本大幅上升。',
+        detail: '认知升级需要三个条件：开放的心态、充足的学习时间、多样化的输入。这三个条件在20-35岁最容易满足。35岁后，职业和家庭责任压缩学习时间，既有的成功经验固化思维模式，接触的信息源趋于单一，认知突破变得极其困难。',
+        actions: ['20-25岁：大量阅读，建立知识体系', '25-30岁：跨界学习，突破认知边界', '30-35岁：系统复盘，形成个人方法论']
+      }
+    ];
+
+    let currentAge = 20;
+
+    function getStatus(age, period) {
+      if (age > period[1])  return { status: 'closed', text: '窗口已关闭' };
+      if (age < period[0])  return { status: 'future', text: '尚未开始' };
+      return { status: 'open', text: '窗口开放' };
+    }
+
+    function costClass(cost) {
+      return 'cost-' + cost.toLowerCase();
+    }
+
+    function getProgress(age, period) {
+      const windowLen = period[1] - period[0];
+      if (age < period[0]) {
+        return 0; // 尚未开始
+      } else if (age >= period[0] && age <= period[1]) {
+        return Math.round(((age - period[0]) / windowLen) * 100); // 窗口内，显示已过比例
+      } else {
+        return 100; // 已关闭
+      }
+    }
+
+    function getProgressText(age, period) {
+      const windowLen = period[1] - period[0];
+      if (age < period[0]) {
+        return `还剩 ${period[0] - age} 年开始`;
+      } else if (age >= period[0] && age <= period[1]) {
+        const elapsed = age - period[0];
+        return `已过 ${elapsed} / ${windowLen} 年`;
+      } else {
+        return `已结束 ${age - period[1]} 年`;
+      }
+    }
+
+    function renderCards() {
+      const grid = document.getElementById('cardsGrid');
+      grid.innerHTML = windows.map(w => {
+        const { status, text } = getStatus(currentAge, w.period);
+        const progress = getProgress(currentAge, w.period);
+        const progressText = getProgressText(currentAge, w.period);
+        const progressClass = status === 'future' ? 'future' : status === 'closed' ? 'closed' : 'open';
+        return `
+          <div class="card ${status}" onclick="openModal(${w.id})">
+            <div class="card-status ${status}">${text}</div>
+            <h3 class="card-title">${w.title}</h3>
+            <p class="card-period">${w.period[0]}-${w.period[1]}岁</p>
+            <div class="card-tags">${w.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+            <div class="card-progress">
+              <div class="progress-bar"><div class="progress-fill ${progressClass}" style="width:${progress}%"></div></div>
+              <div class="progress-label"><span>${progressText}</span><span>${progress}%</span></div>
+            </div>
+            <div class="card-metrics">
+              <div class="metric"><div class="metric-value">${w.rate}%</div><div class="metric-label">成功率</div></div>
+              <div class="metric"><div class="metric-value ${costClass(w.cost)}">${w.cost}</div><div class="metric-label">代价</div></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openModal(id) {
+      const w = windows.find(x => x.id === id);
+      const { status, text } = getStatus(currentAge, w.period);
+      document.getElementById('modal').innerHTML = `
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div class="card-status ${status}" style="margin-bottom:16px">${text}</div>
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:8px;color:#0f172a">${w.title}</h2>
+        <p style="color:#64748b;font-size:13px;margin-bottom:12px">最佳执行期：${w.period[0]}-${w.period[1]}岁</p>
+
+        <div style="margin-bottom:20px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-bottom:6px">
+            <span>${getProgressText(currentAge, w.period)}</span><span>${getProgress(currentAge, w.period)}%</span>
+          </div>
+          <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden">
+            <div style="height:100%;width:${getProgress(currentAge, w.period)}%;background:${getStatus(currentAge,w.period).status==='closed'?'#e2e8f0':getStatus(currentAge,w.period).status==='future'?'#3b82f6':'#10b981'};border-radius:4px;transition:width .4s"></div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h4>窗口说明</h4>
+          <p>${w.desc}</p>
+        </div>
+
+        <div class="modal-section">
+          <h4>深度解析</h4>
+          <p>${w.detail}</p>
+        </div>
+
+        <div class="modal-section">
+          <h4>行动建议</h4>
+          <ul style="padding-left:16px;color:#475569;font-size:14px;line-height:2">
+            ${w.actions.map(a => `<li>${a}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="modal-metrics">
+          <div class="modal-metric">
+            <div class="val">${getProgress(currentAge, w.period)}%</div>
+            <div class="lbl">窗口进度</div>
+          </div>
+          <div class="modal-metric">
+            <div class="val ${costClass(w.cost)}">${w.cost}</div>
+            <div class="lbl">错过代价</div>
+          </div>
+          <div class="modal-metric">
+            <div class="val">${w.period[1] - w.period[0]}年</div>
+            <div class="lbl">窗口时长</div>
+          </div>
+        </div>
+      `;
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    document.getElementById('modalOverlay').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+
+    document.getElementById('ageSlider').addEventListener('input', e => {
+      currentAge = parseInt(e.target.value);
+      document.getElementById('ageDisplay').textContent = currentAge + '岁';
+      renderCards();
+    });
+
+    renderCards();
+  </script>
+</body>
+</html>
