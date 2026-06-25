@@ -735,6 +735,16 @@
       font-weight: 800;
     }
 
+    .group-majors.incomplete {
+      background: var(--rose-soft);
+      color: #7f1d1d;
+    }
+
+    .group-majors.incomplete strong,
+    .group-majors.incomplete em {
+      color: var(--rose);
+    }
+
     .history-side {
       display: grid;
       gap: 5px;
@@ -7155,47 +7165,49 @@
       const fmt = (value) => value ? value.toLocaleString("zh-CN") : "\u9700\u590d\u6838";
       const scoreText = ([low, high]) => low === high ? `${low}` : `${low}-${high}`;
       const sourceLink = (item) => `<a class="source-pill" href="${item.sourceUrl}" target="_blank" rel="noopener" title="${item.sourceLabel}">\u6765\u6e90</a>`;
-      const majorHints = {
-        "\u4e2d\u56fd\u77ff\u4e1a\u5927\u5b66": "\u7535\u6c14\u5de5\u7a0b\u53ca\u5176\u81ea\u52a8\u5316\u3001\u81ea\u52a8\u5316\u3001\u8ba1\u7b97\u673a\u7c7b\u3001\u5b89\u5168\u5de5\u7a0b\u3001\u6d4b\u7ed8/\u5730\u4fe1\u3001\u673a\u68b0\u3001\u80fd\u6e90\u52a8\u529b\u3002",
-        "\u5b89\u5fbd\u5927\u5b66": "\u8ba1\u7b97\u673a\u3001\u8f6f\u4ef6\u5de5\u7a0b\u3001\u7535\u5b50\u4fe1\u606f\u3001\u901a\u4fe1\u3001\u81ea\u52a8\u5316\u3001\u6570\u5b66/\u7edf\u8ba1\u3002",
-        "\u798f\u5dde\u5927\u5b66": "\u7535\u6c14\u3001\u8ba1\u7b97\u673a\u3001\u7535\u5b50\u4fe1\u606f\u3001\u81ea\u52a8\u5316\u3001\u5316\u5de5\u3001\u673a\u68b0\u3002",
-        "\u4e2d\u56fd\u5730\u8d28\u5927\u5b66": "\u5730\u7406\u4fe1\u606f\u79d1\u5b66\u3001\u9065\u611f\u3001\u6d4b\u7ed8\u3001\u8ba1\u7b97\u673a\u3001\u5730\u8d28\u3001\u8d44\u6e90\u73af\u5883\u3002",
-        "\u4e2d\u56fd\u5730\u8d28\u5927\u5b66(\u5317\u4eac)": "\u5730\u7406\u4fe1\u606f\u79d1\u5b66\u3001\u9065\u611f\u3001\u6d4b\u7ed8\u3001\u8ba1\u7b97\u673a\u3001\u5730\u8d28\u3001\u5b9d\u77f3\u53ca\u6750\u6599\u5de5\u827a\u3002",
-        "\u4e2d\u56fd\u5730\u8d28\u5927\u5b66(\u6b66\u6c49)": "\u5730\u4fe1\u3001\u9065\u611f\u3001\u6d4b\u7ed8\u3001\u8ba1\u7b97\u673a\u3001\u5730\u8d28\u3001\u8d44\u6e90\u73af\u5883\u3002",
-        "\u4e2d\u56fd\u77f3\u6cb9\u5927\u5b66": "\u6cb9\u6c14\u50a8\u8fd0\u3001\u80fd\u6e90\u52a8\u529b\u3001\u81ea\u52a8\u5316\u3001\u8ba1\u7b97\u673a\u3001\u5316\u5de5\u3001\u673a\u68b0\u3001\u7535\u6c14\u3002",
-        "\u4e2d\u56fd\u77f3\u6cb9\u5927\u5b66(\u5317\u4eac)": "\u6cb9\u6c14\u50a8\u8fd0\u3001\u77f3\u6cb9\u5de5\u7a0b\u3001\u5316\u5de5\u3001\u80fd\u6e90\u52a8\u529b\u3001\u8ba1\u7b97\u673a\u3001\u81ea\u52a8\u5316\u3002",
-        "\u4e2d\u56fd\u77f3\u6cb9\u5927\u5b66(\u534e\u4e1c)": "\u6cb9\u6c14\u50a8\u8fd0\u3001\u8d44\u6e90\u52d8\u67e5\u3001\u5316\u5de5\u3001\u80fd\u6e90\u52a8\u529b\u3001\u8ba1\u7b97\u673a\u3001\u81ea\u52a8\u5316\u3002",
-        "\u4e2d\u56fd\u77f3\u6cb9\u5927\u5b66(\u5317\u4eac)\u514b\u62c9\u739b\u4f9d\u6821\u533a": "\u77f3\u6cb9\u5de5\u7a0b\u3001\u8d44\u6e90\u52d8\u67e5\u3001\u6cb9\u6c14\u50a8\u8fd0\u3001\u5316\u5de5\u3001\u673a\u68b0\u3001\u8ba1\u7b97\u673a\u3002",
-        "\u5408\u80a5\u5de5\u4e1a\u5927\u5b66": "\u8f66\u8f86\u3001\u673a\u68b0\u3001\u7535\u6c14\u3001\u81ea\u52a8\u5316\u3001\u8ba1\u7b97\u673a\u3001\u7535\u5b50\u4fe1\u606f\u3002",
-        "\u5927\u8fde\u6d77\u4e8b\u5927\u5b66": "\u4ea4\u901a\u8fd0\u8f93\u3001\u81ea\u52a8\u5316\u3001\u7535\u5b50\u4fe1\u606f\u3001\u6cd5\u5b66\u3001\u822a\u6d77\u6280\u672f\u3001\u8f6e\u673a\u5de5\u7a0b\u3002",
-        "\u897f\u5317\u5927\u5b66": "\u8ba1\u7b97\u673a\u3001\u5730\u8d28\u3001\u8003\u53e4\u3001\u6570\u5b66\u3001\u7ecf\u6d4e\u3001\u5316\u5b66\u3002",
-        "\u9655\u897f\u5e08\u8303\u5927\u5b66": "\u6570\u5b66\u3001\u7269\u7406\u3001\u5316\u5b66\u3001\u751f\u7269\u3001\u8ba1\u7b97\u673a\u3001\u5e08\u8303\u65b9\u5411\u3002",
-        "\u897f\u5357\u5927\u5b66": "\u5e08\u8303\u3001\u5fc3\u7406\u5b66\u3001\u8ba1\u7b97\u673a\u3001\u98df\u54c1\u3001\u519c\u5b66\u3001\u751f\u7269\u3002",
-        "\u4e91\u5357\u5927\u5b66": "\u8ba1\u7b97\u673a\u3001\u751f\u6001\u5b66\u3001\u6c11\u65cf\u5b66\u3001\u6570\u5b66\u3001\u751f\u7269\u3001\u5730\u7406\u3002",
-        "\u8d35\u5dde\u5927\u5b66": "\u8ba1\u7b97\u673a\u3001\u7535\u6c14\u3001\u673a\u68b0\u3001\u6750\u6599\u3001\u519c\u5b66\u3001\u98df\u54c1/\u917f\u9152\u3002",
-        "\u6d77\u5357\u5927\u5b66": "\u6cd5\u5b66\u3001\u8ba1\u7b97\u673a\u3001\u98df\u54c1\u3001\u519c\u5b66\u3001\u6d77\u6d0b\u3001\u751f\u7269\u3002",
-        "\u5e7f\u897f\u5927\u5b66": "\u7535\u6c14\u3001\u673a\u68b0\u3001\u571f\u6728\u3001\u8ba1\u7b97\u673a\u3001\u6750\u6599\u3001\u8f7b\u5de5\u98df\u54c1\u3002",
-        "\u5317\u4eac\u6797\u4e1a\u5927\u5b66": "\u98ce\u666f\u56ed\u6797\u3001\u6797\u5b66\u3001\u751f\u6001\u3001\u5730\u4fe1\u3001\u8ba1\u7b97\u673a\u3001\u81ea\u52a8\u5316\u3002",
-        "\u4e2d\u56fd\u77ff\u4e1a\u5927\u5b66(\u5317\u4eac)": "\u5b89\u5168\u3001\u91c7\u77ff\u3001\u5730\u8d28\u3001\u673a\u68b0\u3001\u7535\u6c14\u3001\u8ba1\u7b97\u673a\u3002",
-        "\u897f\u5357\u4ea4\u901a\u5927\u5b66": "\u4ea4\u901a\u8fd0\u8f93\u3001\u571f\u6728\u3001\u7535\u6c14\u3001\u81ea\u52a8\u5316\u3001\u673a\u68b0\u3001\u8ba1\u7b97\u673a\u3002",
-        "\u957f\u5b89\u5927\u5b66": "\u9053\u8def\u6865\u6881\u3001\u8f66\u8f86\u3001\u4ea4\u901a\u3001\u5730\u8d28\u3001\u81ea\u52a8\u5316\u3001\u8ba1\u7b97\u673a\u3002",
-        "\u8fbd\u5b81\u5927\u5b66": "\u7ecf\u6d4e\u3001\u6cd5\u5b66\u3001\u8ba1\u7b97\u673a\u3001\u7535\u5b50\u4fe1\u606f\u3001\u6570\u5b66\u3002",
-        "\u6e56\u5357\u5e08\u8303\u5927\u5b66": "\u5e08\u8303\u3001\u6570\u5b66\u3001\u7269\u7406\u3001\u751f\u7269\u3001\u8ba1\u7b97\u673a\u3001\u533b\u5b66\u76f8\u5173\u3002",
-        "\u4e1c\u5317\u6797\u4e1a\u5927\u5b66": "\u6797\u4e1a\u5de5\u7a0b\u3001\u751f\u6001\u3001\u98df\u54c1\u3001\u8ba1\u7b97\u673a\u3001\u673a\u68b0\u3002",
-        "\u4e1c\u5317\u519c\u4e1a\u5927\u5b66": "\u98df\u54c1\u3001\u519c\u5b66\u3001\u52a8\u7269\u533b\u5b66\u3001\u8ba1\u7b97\u673a\u3001\u673a\u68b0\u3002",
-        "\u9752\u6d77\u5927\u5b66": "\u4e34\u5e8a\u3001\u8ba1\u7b97\u673a\u3001\u7535\u6c14\u3001\u519c\u7267\u3001\u8d44\u6e90\u73af\u5883\u3002",
-        "\u5b81\u590f\u5927\u5b66": "\u8ba1\u7b97\u673a\u3001\u7535\u6c14\u3001\u519c\u5b66\u3001\u98df\u54c1\u3001\u6570\u5b66\u3002",
-        "\u65b0\u7586\u5927\u5b66": "\u8ba1\u7b97\u673a\u3001\u7535\u6c14\u3001\u673a\u68b0\u3001\u8d44\u6e90\u73af\u5883\u3001\u57fa\u7840\u5b66\u79d1\u3002",
-        "\u897f\u85cf\u5927\u5b66": "\u8ba1\u7b97\u673a\u3001\u4e34\u5e8a\u3001\u519c\u7267\u3001\u751f\u6001\u3001\u57fa\u7840\u5b66\u79d1\u3002",
-        "\u6cb3\u5317\u5de5\u4e1a\u5927\u5b66": "\u7535\u6c14\u3001\u81ea\u52a8\u5316\u3001\u7535\u5b50\u4fe1\u606f\u3001\u673a\u68b0\u3001\u8ba1\u7b97\u673a\u3002"
+      const groupKey = (item) => `${item.year}|${item.code}|${item.group}`;
+      const completeGroupMajors = {
+        "2025|4132|大连海事大学04专业组（不限）": {
+          majors: "法学、交通管理、供应链管理、管理科学与工程类（含信息管理与信息系统等3个专业）、工商管理类（工商管理、财务管理）、英语",
+          source: "果然优志 2025 年大连海事大学在江苏专业录取分列表；结合江苏省教育考试院 2025 专业组投档线按再选科目和投档线归组，仍需以当年计划专刊复核计划数。"
+        },
+        "2025|4132|大连海事大学05专业组（不限）（中外合作办学）": {
+          majors: "法学（中外合作办学）",
+          source: "果然优志 2025 年大连海事大学在江苏专业录取分列表；结合江苏省教育考试院 2025 专业组投档线按再选科目和投档线归组。"
+        },
+        "2025|4132|大连海事大学06专业组（化学）": {
+          majors: "自动化类（含自动化等3个专业）、计算机类（含计算机科学与技术等5个专业）、电子信息类（含电子信息工程等4个专业）、机械类（含机械设计制造及其自动化等4个专业）、物联网工程、人工智能、交通运输类（含交通运输等5个专业）",
+          source: "果然优志 2025 年大连海事大学在江苏专业录取分列表；结合江苏省教育考试院 2025 专业组投档线按再选科目和投档线归组，含全部公开列出的普通化学组专业。"
+        },
+        "2025|4132|大连海事大学07专业组（化学）（中外合作办学）": {
+          majors: "电子信息工程（中外合作办学）、机械设计制造及其自动化（中外合作办学）、土木工程（中外合作办学）",
+          source: "果然优志 2025 年大连海事大学在江苏专业录取分列表；结合江苏省教育考试院 2025 专业组投档线按再选科目和投档线归组。"
+        },
+        "2024|1221|中国矿业大学02专业组（不限）": {
+          majors: "大数据管理与应用、工商管理类（会计学、人力资源管理、市场营销）、网络与新媒体、应急管理",
+          source: "自主选拔在线整理的 2024 江苏专业组分析，需回到当年招生计划复核计划数。"
+        },
+        "2024|1221|中国矿业大学04专业组（化学）（中外合作办学）": {
+          majors: "土木工程（中外合作办学，与澳大利亚格里菲斯大学合作）",
+          source: "自主选拔在线整理的 2024 江苏专业组分析，需回到当年招生计划复核计划数。"
+        },
+        "2024|1221|中国矿业大学05专业组（化学）（中外合作办学）": {
+          majors: "建筑环境与能源应用工程（中外合作办学，与澳大利亚皇家墨尔本理工大学合作办学）",
+          source: "自主选拔在线整理的 2024 江苏专业组分析，需回到当年招生计划复核计划数。"
+        }
       };
-      const normalizeKey = (text) => text.replace(/\s+/g, "").replace(/（/g, "(").replace(/）/g, ")");
-      const majorHintFor = (item, school) => {
-        if (item.majors) return `<strong>\u7ec4\u5185\u4e13\u4e1a\uff1a</strong>${item.majors}`;
-        const names = [item.school, school.name, item.group.replace(/\d{2}\u4e13\u4e1a\u7ec4.*$/, "")].map(normalizeKey);
-        const matchedKey = Object.keys(majorHints).find((key) => names.some((name) => name.includes(normalizeKey(key)) || normalizeKey(key).includes(name)));
-        const hint = matchedKey ? majorHints[matchedKey] : "\u6682\u672a\u5bfc\u5165\u8be5\u6821\u5f53\u5e74\u4e13\u4e1a\u7ec4\u5b8c\u6574\u6e05\u5355";
-        return `<strong>\u7ec4\u5185\u4e13\u4e1a\uff1a</strong><em>\u9700\u4ee5\u5f53\u5e74\u300a\u6c5f\u82cf\u62db\u751f\u8003\u8bd5\u300b\u8ba1\u5212\u4e13\u520a\u4e3a\u51c6\u3002</em>\u672c\u9875\u91cd\u70b9\u6838\u5bf9\uff1a${hint}`;
+      const majorInfoFor = (item) => {
+        const exact = item.majors ? { majors: item.majors, source: item.majorSource || "已录入专业组完整清单。" } : completeGroupMajors[groupKey(item)];
+        if (exact) {
+          return {
+            complete: true,
+            html: `<strong>专业组完整专业：</strong>${exact.majors}<br><em>来源：</em>${exact.source}`
+          };
+        }
+        return {
+          complete: false,
+          html: `<strong>专业组完整专业未补全：</strong><em>不能按本页信息服从调剂。</em> 请逐条核对当年《江苏招生考试》计划专刊或高校在江苏招生计划，冷门专业、收费较高专业、中外合作和校区信息都必须看完整。`
+        };
       };
       const historyRowsHtml = (school) => {
         if (!school.history || !school.history.length) {
@@ -7214,7 +7226,10 @@
                     <div class="history-main">
                       <span class="history-group">${item.group}</span>
                       <span class="group-code">\u9662\u6821\u4ee3\u53f7 ${item.code}</span>
-                      <p class="group-majors">${majorHintFor(item, school)}</p>
+                      ${(() => {
+                        const info = majorInfoFor(item);
+                        return `<p class="group-majors${info.complete ? "" : " incomplete"}">${info.html}</p>`;
+                      })()}
                     </div>
                     <div class="history-side">
                       <span class="history-score">${item.score}\u5206</span>
@@ -7315,7 +7330,7 @@
         <li>2025 投档线来源：江苏省教育考试院《江苏省2025年普通高校招生普通类本科批次平行志愿投档线（物理等科目类）》。<a href="https://www.jseea.cn/webfile/upload/2025/07-18/09-33-5302461102655621.pdf">查看官方 PDF</a></li>
         <li>2024 投档线来源：江苏省教育考试院《江苏省2024年普通类本科批次平行志愿投档线（物理等科目类）》。<a href="https://www.jseea.cn/webfile/index/index_zkxx/2024-07-18/7219509116052443136.html">查看官方页面</a> <a href="https://www.jseea.cn/webfile/upload/2024/07-18/11-00-490856-746889704.xls">下载官方 XLS</a></li>
         <li>2023 投档线来源：江苏省教育考试院《江苏省2023年普通类本科批次平行志愿投档线（物理等科目类）》。<a href="https://www.jseea.cn/webfile/index/index_zkxx/2023-07-18/7086888854866628608.html">查看官方页面</a> <a href="https://www.jseea.cn/webfile/upload/2023/07-18/10-05-510166-183377989.xls">下载官方 XLS</a></li>
-        <li>专业组内专业说明：江苏投档线原始文件只含院校专业组和最低投档分，不含组内全部专业。本页先展示该校该组需要重点核对的专业方向；精确组内专业、计划人数、学费和校区，以当年《江苏招生考试》计划专刊及高校招生章程为准。</li>
+        <li>专业组内专业说明：江苏投档线原始文件只含院校专业组和最低投档分，不含组内全部专业。本页只在核到完整清单时展示“专业组完整专业”；未核到完整清单的组会明确标红，不能据此服从调剂。最终专业、计划人数、学费和校区，以当年《江苏招生考试》计划专刊及高校招生章程为准。</li>
         <li>广州/广东补充学校中，华南农业大学、广东工业大学、广州中医药大学、深圳大学、南方医科大学不是 211；它们作为城市与专业优先的补充方案列入。最终是否填报，仍要回到专业组、招生计划和家庭接受度。</li>
         <li>本页为志愿研究简报，不构成录取保证。最终以 2026 年招生计划、院校专业组设置、选科要求和正式投档结果为准。</li>
       </ul>
