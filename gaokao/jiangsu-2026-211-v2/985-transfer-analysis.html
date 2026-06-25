@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>985 冷门专业转热门专业可行性分析</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f8fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #647084;
+      --line: #d8dee9;
+      --teal: #0f766e;
+      --teal-soft: #e7f5f2;
+      --indigo: #4338ca;
+      --indigo-soft: #eef2ff;
+      --amber: #b45309;
+      --amber-soft: #fff7ed;
+      --rose: #be123c;
+      --rose-soft: #fff1f2;
+      --green: #166534;
+      --green-soft: #ecfdf3;
+      --shadow: 0 18px 45px rgba(23, 32, 51, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(23, 32, 51, 0.06);
+    }
+
+    .tab.current {
+      background: var(--amber-soft);
+      border-color: #f1c27d;
+      color: #7c2d12;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main,
+    .hero-panel,
+    .card,
+    .source-card,
+    .table-wrap,
+    .warning {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: clamp(24px, 4vw, 44px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    h1 {
+      margin: 22px 0 16px;
+      max-width: 780px;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 780px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 20px);
+    }
+
+    .headline {
+      margin-top: 28px;
+      padding: 18px 20px;
+      border-left: 5px solid var(--amber);
+      background: var(--amber-soft);
+      border-radius: 6px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .hero-panel {
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      background: #111827;
+      color: #fff;
+    }
+
+    .score-plate {
+      padding: 24px;
+      background: #0f766e;
+    }
+
+    .score-plate .label {
+      margin: 0 0 6px;
+      font-size: 14px;
+      opacity: 0.86;
+    }
+
+    .score-plate .score {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin: 0;
+      font-size: 64px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .score-plate .score span {
+      font-size: 18px;
+      opacity: 0.88;
+    }
+
+    .fact-list {
+      display: grid;
+      align-content: stretch;
+    }
+
+    .fact-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      min-height: 76px;
+      padding: 18px 22px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .fact-row strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .fact-row small {
+      display: block;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 3px;
+      font-size: 12px;
+    }
+
+    .fact-row b {
+      color: #a7f3d0;
+      font-size: 20px;
+      white-space: nowrap;
+    }
+
+    section {
+      margin-top: 24px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 14px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 32px);
+      line-height: 1.2;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .analysis-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 16px;
+      margin-bottom: 16px;
+      align-items: stretch;
+    }
+
+    .card,
+    .source-card {
+      padding: 20px;
+    }
+
+    .card h3,
+    .source-card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .card p,
+    .source-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .card ul {
+      margin: 12px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .source-card {
+      background: #fbfdff;
+      font-size: 13px;
+    }
+
+    .source-card h3 {
+      color: var(--teal);
+      font-size: 15px;
+    }
+
+    .source-card a {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--teal);
+      font-weight: 800;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tag.hot {
+      background: var(--rose-soft);
+      color: var(--rose);
+    }
+
+    .tag.watch {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    .tag.stable {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    .tag.info {
+      background: var(--indigo-soft);
+      color: var(--indigo);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1180px;
+      border-collapse: collapse;
+      background: var(--paper);
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      background: #eef2f7;
+      color: #334155;
+      font-size: 13px;
+    }
+
+    td:nth-child(1) {
+      width: 120px;
+    }
+
+    td:nth-child(2) {
+      width: 190px;
+      font-weight: 800;
+    }
+
+    .ref-box {
+      min-width: 240px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .ref-box p {
+      margin: 0 0 8px;
+    }
+
+    .ref-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .ref-links a {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--indigo-soft);
+      color: var(--indigo);
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .warning {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 22px;
+      padding: 24px;
+      border-left: 6px solid var(--rose);
+      background: var(--rose-soft);
+    }
+
+    .warning h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .warning p {
+      margin: 0;
+      color: #7f1d1d;
+      font-weight: 700;
+    }
+
+    .badges {
+      display: grid;
+      gap: 10px;
+      align-content: center;
+    }
+
+    .badge-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.68);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .badge-line b {
+      color: var(--rose);
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer strong {
+      color: var(--ink);
+    }
+
+    .source-list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .analysis-row,
+      .warning {
+        grid-template-columns: 1fr;
+      }
+
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .section-title {
+        display: block;
+      }
+
+      .section-title p {
+        text-align: left;
+        margin-top: 6px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(100% - 22px, 1120px);
+        padding-top: 14px;
+      }
+
+      .hero-main,
+      .card,
+      .source-card,
+      .warning {
+        padding: 16px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .score-plate .score {
+        font-size: 52px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="tabs" aria-label="页面导航">
+      <a class="tab" href="./index.html">返回 211 方案</a>
+      <a class="tab current" href="./985-transfer-analysis.html">985 冷门转热门分析</a>
+    </nav>
+
+    <header class="hero">
+      <div class="hero-main">
+        <div class="eyebrow">江苏 2026 物理类 607 分补充策略</div>
+        <h1>985 冷门专业能不能先上车，再转热门？能，但不能当主方案。</h1>
+        <p class="lead">
+          这份分析只针对当前考生：物化生，607 分，江苏物理类约 2.9 万位，目标考研，倾向上层次更高的平台。
+          结论很直接：可把“985 冷门专业 + 转专业”作为少量冲刺项，但必须满足“转不成也能接受原专业”的底线。
+        </p>
+        <div class="headline">
+          第一判断：上好学校冷门专业再转热门，成功概率不是零，但风险集中在热门专业接收名额、绩点竞争、跨学院考核和补课成本。不能把它当保底。
+        </div>
+      </div>
+
+      <aside class="hero-panel" aria-label="考生关键数据">
+        <div class="score-plate">
+          <p class="label">考生分数</p>
+          <p class="score">607 <span>分</span></p>
+        </div>
+        <div class="fact-list">
+          <div class="fact-row">
+            <div>
+              <strong>2026 江苏物理类累计位次</strong>
+              <small>按原页面已整理的官方逐分段信息</small>
+            </div>
+            <b>约 29634</b>
+          </div>
+          <div class="fact-row">
+            <div>
+              <strong>核心目标</strong>
+              <small>以后考研，优先要平台和可延展专业</small>
+            </div>
+            <b>考研导向</b>
+          </div>
+          <div class="fact-row">
+            <div>
+              <strong>策略定位</strong>
+              <small>少量冲刺，不替代 211 好专业主线</small>
+            </div>
+            <b>备选策略</b>
+          </div>
+        </div>
+      </aside>
+    </header>
+
+    <section>
+      <div class="section-title">
+        <h2>核心结论</h2>
+        <p>先把这个想法拆开：能不能做、难在哪、什么条件下值得做。</p>
+      </div>
+
+      <div class="analysis-row">
+        <article class="card">
+          <h3>1. 可行，但只适合“原专业不亏”的冲刺</h3>
+          <p>
+            985 学校一般都有转专业通道，部分学校还强调尊重学生专业志趣。但真正决定成败的不是“学校允不允许转”，
+            而是目标学院接收多少人、怎么考核、热门专业有没有容量。计算机、电子信息、电气、临床、金融这类方向，竞争不会因为你在 985 里就变简单。
+          </p>
+        </article>
+        <aside class="source-card">
+          <h3>参考资料</h3>
+          <p>兰州大学管理学院 2026 接收方案写明：一年级可申请全校范围内转专业，二年级限相近学院和专业，且需学院考核。</p>
+          <a href="https://ms.lzu.edu.cn/jxxm/bk/tzgg/content_17172" target="_blank" rel="noopener">兰州大学管理学院转专业接收方案</a>
+        </aside>
+      </div>
+
+      <div class="analysis-row">
+        <article class="card">
+          <h3>2. 实施难度：转到普通专业中等，转到热门专业很高</h3>
+          <p>
+            难点不是提交申请，难点是“转入有要求”。大一你要和同校一批想逃离冷门专业的人竞争。热门专业常看绩点、先修课、面试、笔试或综合考核。
+            对 607 分考生来说，如果入学后数学、程序设计、英语和专业基础课没有打到班级前列，转热门专业会非常被动。
+          </p>
+        </article>
+        <aside class="source-card">
+          <h3>参考资料</h3>
+          <p>西北农林 2025 转专业通知要求各学院确定接收人数，原则上每个行政班不超过 32 人，并对申请转入学生综合考核。</p>
+          <a href="https://zhxy.nwsuaf.edu.cn/tzgg/285ac102311548829c55e603dd499dbe.htm" target="_blank" rel="noopener">西北农林科技大学 2025 转专业通知</a>
+        </aside>
+      </div>
+
+      <div class="analysis-row">
+        <article class="card">
+          <h3>3. 最怕的不是没转成，是原专业也不想学</h3>
+          <p>
+            这个孩子目标考研，那本科阶段最怕四年没有专业主线。冷门专业如果是数学、物理、统计、地信、遥感、信息管理、食品强校、农学强校，可以考研再升级。
+            如果是完全没兴趣的纯生化环材、农林冷门、海洋水产、基础实验类，且孩子明确抗拒，那就不要硬赌。
+          </p>
+        </article>
+        <aside class="source-card">
+          <h3>参考资料</h3>
+          <p>大连理工 2025 转专业通知显示，转专业不仅要资格审核，还要参加学院考核；盘锦跨校区申请还设置前 3%、前 3%-10%等成绩门槛。</p>
+          <a href="https://ss.dlut.edu.cn/info/1261/27441.htm" target="_blank" rel="noopener">大连理工大学 2025 转专业通知</a>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>适合冲的 985 路线</h2>
+        <p>不是推荐盲报，而是给“愿意承担转不成风险”的候选方向。</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>类型</th>
+              <th>学校/校区</th>
+              <th>可接受的原专业</th>
+              <th>想转的热门方向</th>
+              <th>判断</th>
+              <th>转专业资料</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag watch">可研究</span></td>
+              <td>兰州大学</td>
+              <td>数学、物理、化学、地理科学、大气、生态、信息管理等</td>
+              <td>计算机、电子信息、统计、数据科学、管理科学类</td>
+              <td>政策层面存在全校转专业窗口，但要看具体学院接收方案。适合能接受西部城市、目标考研的学生。</td>
+              <td>
+                <div class="ref-box">
+                  <p>历年策略：2025 版办法后强调“转出无限制、转入有要求”；2026 通知要求各学院公布接收方案，部分学院有笔试/面试或名额控制。</p>
+                  <div class="ref-links">
+                    <a href="https://jwc.lzu.edu.cn/xueshengfuwu/zhuanzhuanye/index.html" target="_blank" rel="noopener">教务处专题</a>
+                    <a href="https://jwc.lzu.edu.cn/tongzhigonggao/jxyxygl/2026/0417/330393.html" target="_blank" rel="noopener">2026 通知</a>
+                    <a href="https://jwc.lzu.edu.cn/tongzhigonggao/jxyxygl/2025/0519/308671.html" target="_blank" rel="noopener">2025 方案</a>
+                    <a href="https://phy.lzu.edu.cn/info/1823/15153.htm" target="_blank" rel="noopener">物理学院例子</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="tag watch">可研究</span></td>
+              <td>西北农林科技大学</td>
+              <td>食品、智慧农业、动物医学、植物保护、环境、信息类、机械类</td>
+              <td>计算机、电子信息、数据科学、食品强势方向、动医相关</td>
+              <td>985 平台真实，但农林底色很强。能接受农林食品生命方向才值得冲，别只为 985 三个字。</td>
+              <td>
+                <div class="ref-box">
+                  <p>历年策略：2024/2025 均由学院公布接收名额和考核办法；2025 新办法提出每学年集中开展、分阶段进行，学院综合考核。</p>
+                  <div class="ref-links">
+                    <a href="https://zhxy.nwsuaf.edu.cn/tzgg/285ac102311548829c55e603dd499dbe.htm" target="_blank" rel="noopener">2025 通知</a>
+                    <a href="https://life.nwafu.edu.cn/tzgg/2bcdaee64f794d25b489049a9941990a.htm" target="_blank" rel="noopener">2024 学院例子</a>
+                    <a href="https://food.nwsuaf.edu.cn/jyjx/bksjy/glzdbk/9f7425f32158469c8a12864c104ecb86.htm" target="_blank" rel="noopener">2025 办法</a>
+                    <a href="https://zhxy.nwsuaf.edu.cn/bksjy/jxdt/fc50a9c150a14596a1f5bad92a3215bc.htm" target="_blank" rel="noopener">2026 结果</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="tag info">高风险</span></td>
+              <td>吉林大学</td>
+              <td>数学、物理、化学、地质、机械、材料、交通、仪器等</td>
+              <td>计算机、软件、电子信息、自动化、法学、临床相关</td>
+              <td>学校体量大、专业多，理论上调整空间更大；但热门专业竞争也更密集。冲可以，不能把转计算机当确定结果。</td>
+              <td>
+                <div class="ref-box">
+                  <p>历年策略：2023 起集中考核转专业全面放开口径更明显；2025 政策口径是“转出无限制、转入有标准”，大一大二可申请，热门专业按学院考核。</p>
+                  <div class="ref-links">
+                    <a href="https://zsb.jlu.edu.cn/info/2840.html" target="_blank" rel="noopener">2023 细则</a>
+                    <a href="https://zsb.jlu.edu.cn/info/2839.html" target="_blank" rel="noopener">管理办法</a>
+                    <a href="https://www.jdyy.cn/index.php?a=index&aid=77136&c=View&m=home" target="_blank" rel="noopener">2025 医学院例子</a>
+                    <a href="https://www.zizzs.com/gk/qiangjijihua/201120.html" target="_blank" rel="noopener">2025 政策说明</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="tag info">高风险</span></td>
+              <td>东北大学秦皇岛分校</td>
+              <td>数学、材料、经济管理、资源类、外语类中可接受方向</td>
+              <td>计算机、自动化、电子信息、人工智能</td>
+              <td>校区和专业组要单独查。东北大学强在自动化、计算机相关，但低分进校后转入热门方向难度高。</td>
+              <td>
+                <div class="ref-box">
+                  <p>历年策略：常见路径分学业优秀、学科专长、学业困难等；2025 公示显示按学生报名、学院审核、公示和学校审议流程，热门学院另设考试。</p>
+                  <div class="ref-links">
+                    <a href="https://jwc.neuq.edu.cn/info/1062/4262.htm" target="_blank" rel="noopener">2025 办法</a>
+                    <a href="https://jwc.neuq.edu.cn/info/1070/4640.htm" target="_blank" rel="noopener">2025 公示</a>
+                    <a href="https://jsjytx.neuq.edu.cn/info/1032/7029.htm" target="_blank" rel="noopener">计算机考试</a>
+                    <a href="https://wyxy.neuq.edu.cn/info/1147/5513.htm" target="_blank" rel="noopener">2024 学院例子</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="tag hot">谨慎</span></td>
+              <td>大连理工大学盘锦校区</td>
+              <td>化工、海洋、食品、环境、药学、生物工程等</td>
+              <td>大连校区普通专业、软件、电子信息、自动化</td>
+              <td>跨校区转专业成绩门槛高。能接受盘锦原专业才放，不接受就别赌。</td>
+              <td>
+                <div class="ref-box">
+                  <p>历年策略：2025 明确大连校区与盘锦跨校区分批；盘锦转大连普通专业通常看本学域前 3% 或前 3%-10%，并由学院考核录取。</p>
+                  <div class="ref-links">
+                    <a href="https://ss.dlut.edu.cn/info/1261/27441.htm" target="_blank" rel="noopener">2025 通知</a>
+                    <a href="https://xsgzb.dlut.edu.cn/info/1651/2971.htm" target="_blank" rel="noopener">盘锦办法</a>
+                    <a href="https://upload-1251142715.cos.ap-shanghai.myqcloud.com/25bbdd50-2aa2-4d29-895b-c9a75b785e65/%E5%A4%A7%E8%BF%9E%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6%E7%9B%98%E9%94%A6%E6%A0%A1%E5%8C%BA%E6%9C%AC%E7%A7%91%E7%94%9F%E6%A0%A1%E5%8C%BA%E5%86%85%E4%B8%93%E4%B8%9A%E8%B0%83%E6%95%B4%E5%8F%8A%E6%A0%A1%E5%8C%BA%E9%97%B4%E4%BC%98%E7%A7%80%E5%AD%A6%E7%94%9F%E8%BD%AC%E4%B8%93%E4%B8%9A%E7%AE%A1%E7%90%86%E5%8A%9E%E6%B3%95.pdf" target="_blank" rel="noopener">办法 PDF</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>决策标准</h2>
+        <p>把“想法”变成可执行的填报规则。</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3><span class="tag stable">可以填</span> 原专业有出口</h3>
+          <p>原专业本身能考研、能转向数据/工程/科研，转不成也不会崩。比如数学、统计、物理、地信、遥感、食品强校、信息管理。</p>
+        </article>
+        <article class="card">
+          <h3><span class="tag watch">谨慎填</span> 需要高绩点</h3>
+          <p>目标是计算机、电子信息、电气、临床这类热门方向，默认要大一绩点打到前列，还要准备面试或笔试。</p>
+        </article>
+        <article class="card">
+          <h3><span class="tag hot">不要填</span> 转不成就无法接受</h3>
+          <p>如果孩子一听原专业就抗拒，家里只想靠“入学后转走”解决，那这个志愿就是赌博，不是规划。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="warning">
+      <div>
+        <h2>给这个考生的最终判断</h2>
+        <p>
+          主线仍然是 211 好专业，985 冷门转热门只能放少量冲刺位。最优填法是：
+          前面用可接受原专业的 985 冲一下，中段用 211 硬专业稳住，后段用 211 可接受专业保底。
+        </p>
+      </div>
+      <div class="badges">
+        <div class="badge-line"><span>985 冷门 + 转专业</span><b>少量冲</b></div>
+        <div class="badge-line"><span>211 硬专业</span><b>主力</b></div>
+        <div class="badge-line"><span>不能接受原专业</span><b>别填</b></div>
+        <div class="badge-line"><span>入学后执行</span><b>拼绩点</b></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>入学后执行清单</h2>
+        <p>真要赌转专业，第一学期就得按这个强度来。</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>动作</th>
+              <th>目的</th>
+              <th>底线</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>录取后</td>
+              <td>下载学校当年转专业通知、各学院接收计划、目标专业培养方案</td>
+              <td>确认目标专业是否接收、考什么、要什么先修课</td>
+              <td>没有明确接收计划，就按高风险处理</td>
+            </tr>
+            <tr>
+              <td>大一上</td>
+              <td>高数、英语、程序设计/大学物理、通识必修优先拿高分</td>
+              <td>多数转专业考核绕不开绩点和基础课表现</td>
+              <td>不能挂科，尽量冲专业/大类前 10%-15%</td>
+            </tr>
+            <tr>
+              <td>申请前</td>
+              <td>提前联系目标学院教务，核对报名资格、材料、面试/笔试要求</td>
+              <td>避免因为资格细节被挡在门外</td>
+              <td>只报“看起来热门”但不了解考核内容，不行</td>
+            </tr>
+            <tr>
+              <td>转入后</td>
+              <td>补修课程、调整培养方案，尽快进入新专业课程节奏</td>
+              <td>转成只是开始，课程缺口会影响后续保研/考研</td>
+              <td>补课成本必须提前接受</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <strong>参考资料与说明</strong>
+      <ul class="source-list">
+        <li>考生分数与位次背景沿用主页面：江苏 2026 物理类 607 分，累计位次约 29634，来源为江苏省教育考试院逐分段统计表。<a href="https://www.jseea.cn/webfile/upload/2026/06-24/18-24-3208191910823240.jpg" target="_blank" rel="noopener">查看官方图片</a></li>
+        <li>兰州大学管理学院 2026 年度本科生转专业接收方案。<a href="https://ms.lzu.edu.cn/jxxm/bk/tzgg/content_17172" target="_blank" rel="noopener">查看来源</a></li>
+        <li>西北农林科技大学资源环境学院转发的 2025 年本科生转专业工作通知。<a href="https://zhxy.nwsuaf.edu.cn/tzgg/285ac102311548829c55e603dd499dbe.htm" target="_blank" rel="noopener">查看来源</a></li>
+        <li>吉林大学本科学生转专业管理规定。<a href="https://jwc.jlu.edu.cn/info/1050/2393.htm" target="_blank" rel="noopener">查看来源</a></li>
+        <li>大连理工大学软件学院转发的学校教务处 2025 年本科生转专业通知。<a href="https://ss.dlut.edu.cn/info/1261/27441.htm" target="_blank" rel="noopener">查看来源</a></li>
+        <li>东北大学秦皇岛分校本科生转专业管理办法页面。<a href="https://jwc.neuq.edu.cn/info/1062/4262.htm" target="_blank" rel="noopener">查看来源</a></li>
+        <li>“适合冲的 985 路线”表格右侧已补充各校历年转专业资料入口，包括年度通知、学院接收方案、拟录取公示、校区转专业办法等；这些资料用于判断“能不能申请、谁来考核、是否有名额或成绩门槛”。</li>
+        <li>本页为策略分析，不构成录取或转专业成功保证。最终以 2026 年招生计划、院校专业组设置、学校当年转专业通知和学院接收细则为准。</li>
+      </ul>
+    </footer>
+  </main>
+</body>
+</html>
