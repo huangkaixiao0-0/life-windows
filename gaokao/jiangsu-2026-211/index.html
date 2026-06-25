@@ -537,6 +537,59 @@
       font-size: 13px;
     }
 
+    .inline-history {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+
+    .inline-history summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 13px;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .inline-history summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .inline-history summary::after {
+      content: "+";
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--teal-soft);
+      color: var(--teal);
+      flex: 0 0 auto;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .inline-history[open] summary::after {
+      content: "-";
+    }
+
+    .inline-history-body {
+      border-top: 1px solid var(--line);
+      padding: 0 12px 12px;
+      background: var(--paper);
+    }
+
+    .inline-history .mini-table {
+      margin-top: 10px;
+    }
+
     .footer {
       margin-top: 28px;
       padding: 18px 0 0;
@@ -752,62 +805,7 @@
       </div>
     </section>
 
-    <section>
-      <div class="section-title">
-        <h2>学校分层清单</h2>
-        <p>报志愿时按“冲、稳、保”拉开梯度。</p>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>层级</th>
-              <th>学校</th>
-              <th>建议专业方向</th>
-              <th>判断</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="tag watch">冲</span></td>
-              <td>
-                <strong>苏州大学、江南大学、南京师范大学、南京农业大学、中国药科大学</strong>
-                <div class="school-note">学校名头好，但同校不同专业组分差很大。</div>
-              </td>
-              <td>低分组里挑可接受专业；江南食品/生工，中国药科药学，南师偏师范和基础学科。</td>
-              <td>能冲，但不能盲目服从调剂。最差专业不能接受就别硬填。</td>
-            </tr>
-            <tr>
-              <td><span class="tag hot">稳</span></td>
-              <td>
-                <strong>中国矿业大学、安徽大学、福州大学、南昌大学、郑州大学</strong>
-                <div class="school-note">607 分段更应该重点研究的主力区间。</div>
-              </td>
-              <td>计算机、电子信息、电气、自动化、数学/统计、行业特色王牌。</td>
-              <td>平台和专业相对能兼顾，是最该花时间拆专业组的部分。</td>
-            </tr>
-            <tr>
-              <td><span class="tag stable">稳保</span></td>
-              <td>
-                <strong>中国地质大学、中国石油大学、华中农业大学、太原理工大学、河北工业大学</strong>
-                <div class="school-note">行业特色明显，适合目标清楚的考生。</div>
-              </td>
-              <td>地信/遥感/测绘、能源动力、自动化、机械、电气、食品、农学强势方向。</td>
-              <td>别被行业名字劝退，也别被 211 名头迷住。看四年后考研和就业出口。</td>
-            </tr>
-            <tr>
-              <td><span class="tag risk">避坑</span></td>
-              <td>
-                <strong>只为 211 牌子而选完全不想学的冷门专业</strong>
-                <div class="school-note">这类选择最容易本科四年痛苦，考研也被动。</div>
-              </td>
-              <td>纯生化环材、农林冷门、管理类泛专业、名字新但岗位不清的专业要谨慎。</td>
-              <td>普通家庭不要把“以后转专业、以后考研再说”当默认方案。</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+
 
     <section>
       <div class="section-title">
@@ -938,6 +936,70 @@
               <td>临床、计算机、电气、农牧、资源环境、基础学科</td>
               <td>这是“稳拿 211”的下限池。适合非常看重 211 标签，但要能接受距离和城市。</td>
             </tr>
+
+            <tr>
+              <td><span class="tag hot">广州211</span></td>
+              <td><strong>暨南大学</strong></td>
+              <td>2025 江苏物理类最低约 598；普通组可上探到 620+ 区间</td>
+              <td>计算机、人工智能、新闻传播、经济金融、临床医学、药学</td>
+              <td>607 分真正值得研究的广州 211，城市、平台和专业丰富度都不错。</td>
+            </tr>
+            <tr>
+              <td><span class="tag watch">广州211</span></td>
+              <td><strong>华南师范大学</strong></td>
+              <td>2025 江苏物理类最低约 610</td>
+              <td>数学、物理、计算机、心理学、师范、教育技术</td>
+              <td>607 是贴线小冲，适合想去广州、能接受师范底色和基础学科路线的考生。</td>
+            </tr>
+            <tr>
+              <td><span class="tag risk">超冲985</span></td>
+              <td><strong>华南理工大学</strong></td>
+              <td>2024 江苏物理类化学组约 642 起，普通好专业明显高于 607</td>
+              <td>计算机、电子、自动化、轻工、材料、建筑</td>
+              <td>别把它当 607 的正常冲刺项，除非有特殊类型招生或非常低概率捡漏。</td>
+            </tr>
+            <tr>
+              <td><span class="tag risk">超冲985</span></td>
+              <td><strong>中山大学</strong></td>
+              <td>近年江苏物理类整体高位，普通组通常远高于 607</td>
+              <td>临床医学、计算机、数学、经济管理、基础医学</td>
+              <td>广州顶级平台，但对 607 分不是常规方案，放认知里可以，别占主志愿梯度。</td>
+            </tr>
+            <tr>
+              <td><span class="tag stable">广州双一流</span></td>
+              <td><strong>华南农业大学</strong></td>
+              <td>2025 江苏物理类约 588-590</td>
+              <td>农学、食品、动物医学、生物、计算机、智慧农业</td>
+              <td>不是 211，但双一流且在广州；如果接受农学食品生命方向，性价比很高。</td>
+            </tr>
+            <tr>
+              <td><span class="tag stable">广州强工科</span></td>
+              <td><strong>广东工业大学</strong></td>
+              <td>2025 江苏物理类最低约 543，强专业需另看组内分差</td>
+              <td>自动化、计算机、电子信息、机械、电气、工业设计</td>
+              <td>不是 211，但在广东就业认可度不错；想去广州就业，可以作为专业优先方案。</td>
+            </tr>
+            <tr>
+              <td><span class="tag stable">广州双一流</span></td>
+              <td><strong>广州中医药大学</strong></td>
+              <td>2025 江苏物理类最低约 584；2024 江苏物理类约 575</td>
+              <td>中医学、中药学、针灸推拿、临床医学、药学</td>
+              <td>适合明确接受中医药长周期培养的人；不确定学医就别因为城市硬填。</td>
+            </tr>
+            <tr>
+              <td><span class="tag watch">广东强校</span></td>
+              <td><strong>深圳大学</strong></td>
+              <td>2025 江苏物理类约 611-627，中外约 611</td>
+              <td>计算机、电子信息、金融科技、建筑、自动化</td>
+              <td>不是 211，但城市和就业资源强；607 略低，适合小冲中外或低分组。</td>
+            </tr>
+            <tr>
+              <td><span class="tag watch">广州医科</span></td>
+              <td><strong>南方医科大学</strong></td>
+              <td>2025 江苏物理类最低约 555，医学热门专业分数会明显更高</td>
+              <td>临床医学、口腔、麻醉、医学影像、基础医学</td>
+              <td>医学强校，分数下限不等于好专业下限；想学医才看，不想学医别碰。</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -945,16 +1007,62 @@
 
     <section>
       <div class="section-title">
-        <h2>点击展开：历年分数与位次参考</h2>
-        <p>每个学校单独展开，先看位次再看分数。</p>
+        <h2>学校分层清单</h2>
+        <p>报志愿时按“冲、稳、保”拉开梯度。</p>
       </div>
-      <p class="history-note">
-        说明：2025 行为该校在江苏物理类本科批的投档分参考区间，并按 2025 官方逐分段表换算累计位次；
-        2026、2024 行为同一分数在对应年份江苏物理类逐分段表中的累计位次，方便看分数含金量变化。
-        2026 正式本科批投档线尚未发布，最终仍以当年院校专业组投档结果为准。
-      </p>
-      <div class="history-grid" id="schoolHistoryGrid" aria-live="polite"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>层级</th>
+              <th>学校</th>
+              <th>建议专业方向</th>
+              <th>判断</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag watch">冲</span></td>
+              <td>
+                <strong>苏州大学、江南大学、南京师范大学、南京农业大学、中国药科大学</strong>
+                <div class="school-note">学校名头好，但同校不同专业组分差很大。</div>
+              </td>
+              <td>低分组里挑可接受专业；江南食品/生工，中国药科药学，南师偏师范和基础学科。</td>
+              <td>能冲，但不能盲目服从调剂。最差专业不能接受就别硬填。</td>
+            </tr>
+            <tr>
+              <td><span class="tag hot">稳</span></td>
+              <td>
+                <strong>中国矿业大学、安徽大学、福州大学、南昌大学、郑州大学</strong>
+                <div class="school-note">607 分段更应该重点研究的主力区间。</div>
+              </td>
+              <td>计算机、电子信息、电气、自动化、数学/统计、行业特色王牌。</td>
+              <td>平台和专业相对能兼顾，是最该花时间拆专业组的部分。</td>
+            </tr>
+            <tr>
+              <td><span class="tag stable">稳保</span></td>
+              <td>
+                <strong>中国地质大学、中国石油大学、华中农业大学、太原理工大学、河北工业大学</strong>
+                <div class="school-note">行业特色明显，适合目标清楚的考生。</div>
+              </td>
+              <td>地信/遥感/测绘、能源动力、自动化、机械、电气、食品、农学强势方向。</td>
+              <td>别被行业名字劝退，也别被 211 名头迷住。看四年后考研和就业出口。</td>
+            </tr>
+            <tr>
+              <td><span class="tag risk">避坑</span></td>
+              <td>
+                <strong>只为 211 牌子而选完全不想学的冷门专业</strong>
+                <div class="school-note">这类选择最容易本科四年痛苦，考研也被动。</div>
+              </td>
+              <td>纯生化环材、农林冷门、管理类泛专业、名字新但岗位不清的专业要谨慎。</td>
+              <td>普通家庭不要把“以后转专业、以后考研再说”当默认方案。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
+
+
 
     <script>
       const rankMaps = {
@@ -1053,7 +1161,16 @@
         { name: "青海大学", tag: "下限池", scores: [593, 598], groups: "2025 参考：化学约 593；化生约 598。", note: "非常看重 211 标签时可放保底区。" },
         { name: "宁夏大学", tag: "下限池", scores: [583, 601], groups: "2025 参考：相关组约 583-601。", note: "看重 211 标签可以研究，距离和城市是主要成本。" },
         { name: "新疆大学", tag: "下限池", scores: [564, 580], groups: "2025 参考：相关组约 564-580。", note: "稳 211 标签，但地域成本要全家提前想清楚。" },
-        { name: "西藏大学", tag: "下限池", scores: [555, 583], groups: "2025 参考：相关组约 555-583。", note: "属于极稳 211 标签路线，适合能接受地域和环境差异的家庭。" }
+        { name: "西藏大学", tag: "下限池", scores: [555, 583], groups: "2025 参考：相关组约 555-583。", note: "属于极稳 211 标签路线，适合能接受地域和环境差异的家庭。" },
+        { name: "暨南大学", tag: "广州211", scores: [598, 623], groups: "2025 参考：江苏物理类最低约 598；不同专业组可到 620+ 区间。", note: "607 分真正值得研究的广州 211，城市、平台和专业丰富度都不错。" },
+        { name: "华南师范大学", tag: "广州211", scores: [610, 610], groups: "2025 参考：江苏物理类最低约 610；2024 江苏物理类约 610。", note: "607 是贴线小冲，适合想去广州、能接受师范底色和基础学科路线的考生。" },
+        { name: "华南理工大学", tag: "超冲985", scores: [642, 642], groups: "2024 参考：江苏物理类化学组约 642 起；普通强势专业明显高于 607。", note: "别把它当 607 的正常冲刺项，除非有特殊类型招生或非常低概率捡漏。" },
+        { name: "中山大学", tag: "超冲985", scores: [642, 642], groups: "近年江苏物理类整体高位，普通组通常远高于 607。", note: "广州顶级平台，但对 607 分不是常规方案，放认知里可以，别占主志愿梯度。" },
+        { name: "华南农业大学", tag: "广州双一流", scores: [588, 590], groups: "2025 参考：江苏物理类约 588-590；2024 参考约 584/589。", note: "不是 211，但双一流且在广州；如果接受农学、食品、生命方向，性价比很高。" },
+        { name: "广东工业大学", tag: "广州强工科", scores: [543, 602], groups: "2025 参考：江苏物理类最低约 543；强专业和普通组需逐组核对。", note: "不是 211，但在广东就业认可度不错；想去广州就业，可以作为专业优先方案。" },
+        { name: "广州中医药大学", tag: "广州双一流", scores: [584, 584], groups: "2025 参考：江苏物理类最低约 584；2024 江苏物理类约 575。", note: "适合明确接受中医药长周期培养的人；不确定学医就别因为城市硬填。" },
+        { name: "深圳大学", tag: "广东强校", scores: [611, 627], groups: "2025 参考：江苏物理类约 611-627，中外合作约 611。", note: "不是 211，但城市和就业资源强；607 略低，适合小冲中外或低分组。" },
+        { name: "南方医科大学", tag: "广州医科", scores: [555, 604], groups: "2025 参考：江苏物理类最低约 555；医学热门专业分数会明显更高。", note: "医学强校，分数下限不等于好专业下限；想学医才看，不想学医别碰。" }
       ];
 
       const fmt = (value) => value ? value.toLocaleString("zh-CN") : "需核";
@@ -1066,19 +1183,10 @@
         return low === high ? `${fmt(lowRank)} 名` : `${fmt(highRank)}-${fmt(lowRank)} 名`;
       };
 
-      const grid = document.getElementById("schoolHistoryGrid");
-      grid.innerHTML = schoolHistory.map((school, index) => `
-        <details class="history-card"${index < 2 ? " open" : ""}>
-          <summary>
-            <div>
-              <div class="history-title">
-                <span>${school.name}</span>
-                <span class="tag stable">${school.tag}</span>
-              </div>
-              <div class="history-sub">2025 投档参考 ${scoreText(school.scores)} 分；对应 2025 位次约 ${rankBand("2025", school.scores)}</div>
-            </div>
-          </summary>
-          <div class="history-body">
+      const historyDetailsHtml = (school) => `
+        <details class="inline-history">
+          <summary>展开分数 / 位次参考</summary>
+          <div class="inline-history-body">
             <table class="mini-table">
               <thead>
                 <tr>
@@ -1099,7 +1207,7 @@
                   <td>2025</td>
                   <td>${scoreText(school.scores)} 分</td>
                   <td>${rankBand("2025", school.scores)}</td>
-                  <td>按该校 2025 投档参考区间换算</td>
+                  <td>按 2025 投档参考区间换算</td>
                 </tr>
                 <tr>
                   <td>2024</td>
@@ -1112,8 +1220,40 @@
             <p class="history-text"><strong>专业组参考：</strong>${school.groups}</p>
             <p class="history-text"><strong>判断：</strong>${school.note}</p>
           </div>
-        </details>
-      `).join("");
+        </details>`;
+
+      const normalizeSchoolName = (text) => text
+        .replace(/\s+/g, "")
+        .replace(/[（(].*?[）)]/g, (m) => m.includes("北京") ? "（北京）" : "");
+
+      const findSchool = (name) => {
+        const normalized = normalizeSchoolName(name);
+        return schoolHistory.find((school) => normalizeSchoolName(school.name) === normalized);
+      };
+
+      const appendHistory = (target, name) => {
+        const school = findSchool(name);
+        if (!target || !school || target.querySelector(".inline-history")) return;
+        target.insertAdjacentHTML("beforeend", historyDetailsHtml(school));
+      };
+
+      document.querySelectorAll(".card").forEach((card) => {
+        const titleNode = card.querySelector("h3")?.childNodes[0];
+        const name = titleNode?.textContent.trim();
+        appendHistory(card, name);
+      });
+
+      document.querySelectorAll(".table-wrap tbody tr").forEach((row) => {
+        const strong = row.querySelector("td:nth-child(2) strong");
+        const lastCell = row.lastElementChild;
+        if (!strong || !lastCell) return;
+        const raw = strong.textContent.trim();
+        if (raw.includes("、") || raw.includes("只为")) return;
+        raw.split("/").map((item) => item.trim()).filter(Boolean).forEach((name) => {
+          const school = findSchool(name);
+          if (school) lastCell.insertAdjacentHTML("beforeend", historyDetailsHtml(school));
+        });
+      });
     </script>
 
     <section>
@@ -1161,6 +1301,7 @@
         <li>江苏省教育考试院：《江苏省2025年普通高考普通类（物理等科目类）逐分段统计表》，用于换算 2025 投档分对应位次。<a href="https://www.jseea.cn/webfile/upload/2025/06-24/19-09-070773-818991274.jpg">查看官方图片</a></li>
         <li>江苏省教育考试院：《江苏省2024年普通高考逐分段统计表（第一阶段）》，用于同分位次对比。<a href="https://www.jseea.cn/webfile/index/index_zkxx/2024-06-24/7210960924591525888.html">查看官方页面</a></li>
         <li>江苏省教育考试院：《江苏省2025年普通高校招生普通类本科批次平行志愿投档线（物理等科目类）》。<a href="https://www.jseea.cn/webfile/upload/2025/07-18/09-33-5302461102655621.pdf">查看官方 PDF</a></li>
+        <li>广州/广东补充学校中，华南农业大学、广东工业大学、广州中医药大学、深圳大学、南方医科大学不是 211；它们作为城市与专业优先的补充方案列入。</li>
         <li>本页为志愿研究简报，不构成录取保证。最终以 2026 年招生计划、院校专业组设置、选科要求和正式投档结果为准。</li>
       </ul>
     </footer>
